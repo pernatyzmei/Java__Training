@@ -1,2 +1,2 @@
-MyFirstPrg.java
- MyFirstPrg
+ru/stqa/pft/sandbox/MyFirstPrg.java
+ ru.stqa.pft.sandbox.MyFirstPrg
