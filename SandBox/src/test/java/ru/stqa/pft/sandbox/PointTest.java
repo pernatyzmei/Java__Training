@@ -12,7 +12,7 @@ public class PointTest {
 
     Assert.assertEquals(Point.distance(a, b), 5.0);
   }
-  }
+}
 
 
 
