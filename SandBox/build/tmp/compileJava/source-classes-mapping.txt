@@ -1,4 +1,0 @@
-ru/stqa/pft/sandbox/Point.java
- ru.stqa.pft.sandbox.Point
-ru/stqa/pft/sandbox/MyFirstPrg.java
- ru.stqa.pft.sandbox.MyFirstPrg
