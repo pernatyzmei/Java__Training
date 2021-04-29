@@ -6,7 +6,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.ContactData;
-import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,11 +13,13 @@ import static org.testng.Assert.fail;
 
 public class ApplicationManager {
   WebDriver wd;
+  private  GroupHelper groupHelper;
   private StringBuffer verificationErrors = new StringBuffer();
 
   public void init() {
     wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    groupHelper = new GroupHelper(wd);
     wd.get("http://localhost/addressbook/");
     login("admin", "secret");
   }
@@ -29,28 +30,6 @@ public class ApplicationManager {
     wd.findElement(By.name("user")).clear();
     wd.findElement(By.name("user")).sendKeys(username);
     wd.findElement(By.xpath("//input[@value='Login']")).click();
-  }
-
-  public void returnToGroupPage() {
-    wd.findElement(By.linkText("group page")).click();
-  }
-
-  public void submitGroupCreation() {
-    wd.findElement(By.name("submit")).click();
-  }
-
-  public void fillGroupForm(GroupData groupData) {
-    wd.findElement(By.name("group_name")).click();
-    wd.findElement(By.name("group_name")).clear();
-    wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
-    wd.findElement(By.name("group_header")).clear();
-    wd.findElement(By.name("group_header")).sendKeys(groupData.getHeader());
-    wd.findElement(By.name("group_footer")).clear();
-    wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
-  }
-
-  public void initGroupCreation() {
-    wd.findElement(By.name("new")).click();
   }
 
   public void goToGroupPage() {
@@ -90,14 +69,6 @@ public class ApplicationManager {
     }
   }
 
-  public void geleteSelectedGroup() {
-    wd.findElement(By.name("delete")).click();
-  }
-
-  public void selectGroup() {
-    wd.findElement(By.name("selected[]")).click();
-  }
-
   public void returnToHomePage() {
     wd.findElement(By.linkText("home page")).click();
   }
@@ -132,5 +103,9 @@ public class ApplicationManager {
 
   public void initContactCreation() {
     wd.findElement(By.linkText("add new")).click();
+  }
+
+  public GroupHelper getGroupHelper() {
+    return groupHelper;
   }
 }
