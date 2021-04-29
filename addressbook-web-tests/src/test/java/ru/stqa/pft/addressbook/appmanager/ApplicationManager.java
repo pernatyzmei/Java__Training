@@ -12,6 +12,7 @@ import static org.testng.Assert.fail;
 
 public class ApplicationManager {
   WebDriver wd;
+  private SessionHelper sessionHelper;
   private  ContactHelper contactHelper;
   private  NavigationHelper navigationHelper;
   private  GroupHelper groupHelper;
@@ -23,32 +24,22 @@ public class ApplicationManager {
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     contactHelper = new ContactHelper(wd);
+    sessionHelper = new SessionHelper(wd);
     wd.get("http://localhost/addressbook/");
-    login("admin", "secret");
+    sessionHelper.login("admin", "secret");
   }
 
-  private void login(String username, String password) {
-    wd.findElement(By.name("pass")).clear();
-    wd.findElement(By.name("pass")).sendKeys(password);
-    wd.findElement(By.name("user")).clear();
-    wd.findElement(By.name("user")).sendKeys(username);
-    wd.findElement(By.xpath("//input[@value='Login']")).click();
-  }
+
 
   public void stop() {
     wd.quit();
     String verificationErrorString = verificationErrors.toString();
     if (!"".equals(verificationErrorString)) {
       fail(verificationErrorString);
-      logout();
+      sessionHelper.logout();
     }
   }
 
-  private void logout() {
-    wd.findElement(By.linkText("Logout")).click();
-    wd.findElement(By.name("user")).clear();
-    wd.findElement(By.name("user")).sendKeys("admin");
-  }
 
   private boolean isElementPresent(By by) {
     try {
