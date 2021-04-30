@@ -22,6 +22,10 @@ public class HelperBase {
     wd.findElement(locator).sendKeys(text);
   }
 
+  protected void assertConfirmation(){
+    wd.switchTo().alert().accept();
+  }
+
   private boolean isAlertPresent() {
     try {
       wd.switchTo().alert();
