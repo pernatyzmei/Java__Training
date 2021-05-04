@@ -26,7 +26,7 @@ public class HelperBase {
     wd.switchTo().alert().accept();
   }
 
-  private boolean isAlertPresent() {
+  protected boolean isAlertPresent() {
     try {
       wd.switchTo().alert();
       return true;
@@ -35,7 +35,7 @@ public class HelperBase {
     }
   }
 
-  private boolean isElementPresent(By by) {
+  protected boolean isElementPresent(By by) {
     try {
       wd.findElement(by);
       return true;
