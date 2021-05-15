@@ -5,12 +5,11 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class ContactModificationTests extends TestBase {
 
-  @Test(enabled = false)
+  @Test//(enabled = false)
 
   public void testContactModification(){
     if (! app.getContactHelper().isThereAContact()) {
