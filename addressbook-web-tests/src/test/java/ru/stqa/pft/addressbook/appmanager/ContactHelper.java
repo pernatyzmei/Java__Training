@@ -126,8 +126,10 @@ public class ContactHelper extends HelperBase {
     for (WebElement element : elements) {
       String lastName = element.findElement(By.xpath(".//td[2]")).getText();
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
+      String[] phones = element.findElement(By.xpath(".//td[6]")).getText().split("\n");
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-      contactCache.add(new ContactData().withId(id).withFirstname(firstName).withLastname(lastName));
+      contactCache.add(new ContactData().withId(id).withFirstname(firstName).withLastname(lastName)
+              .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
     }
     return new Contacts(contactCache);
   }
@@ -141,12 +143,12 @@ public class ContactHelper extends HelperBase {
     String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
     String work = wd.findElement(By.name("work")).getAttribute("value");
     wd.navigate().back();
-    return new ContactData().withId(contact.getId()).withFirstname(contact.getFirstname())
-            .withLastname(contact.getLastname()).withHomePhone(contact.getHomePhone())
-            .withMobilePhone(contact.getMobilePhone()).withWorkPhone(contact.getWorkPhone());
+    return new ContactData().withId(contact.getId()).withFirstname(firstname)
+            .withLastname(lastname).withHomePhone(home)
+            .withMobilePhone(mobile).withWorkPhone(work);
   }
 
   private void initContactModificationById(int id) {
-  wd.findElement(By.cssSelector(String.format("a[href='edit.php?=%s']", id))).click();
+  wd.findElement(By.cssSelector(String.format("a[href='edit.php?id=%s']", id))).click();
   }
 }
