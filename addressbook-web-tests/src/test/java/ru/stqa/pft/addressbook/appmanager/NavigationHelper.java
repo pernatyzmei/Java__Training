@@ -6,6 +6,10 @@ import org.openqa.selenium.WebDriver;
 public class NavigationHelper extends HelperBase {
 
 
+  public void HomePage() {
+    click(By.linkText("home"));
+  };
+
   public NavigationHelper(WebDriver wd) {
 
     super(wd);
