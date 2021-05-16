@@ -4,16 +4,18 @@ import java.util.Objects;
 
 public class ContactData {
 
-  private int id = Integer.MAX_VALUE;;
-  private  String firstname;
-  private  String middlename;
-  private  String lastname;
-  private  String nickname;
-  private  String company;
-  private  String address;
-  private  String homePhone;
+  private int id = Integer.MAX_VALUE;
+  ;
+  private String firstname;
+  private String middlename;
+  private String lastname;
+  private String nickname;
+  private String company;
+  private String address;
+  private String homePhone;
   private String mobilePhone;
   private String workPhone;
+  private String allPhones;
 
 
 //setters
@@ -68,6 +70,11 @@ public class ContactData {
     return this;
   }
 
+  public ContactData withAllPhones(String allPhones) {
+    this.allPhones = allPhones;
+    return this;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -75,7 +82,9 @@ public class ContactData {
 
 //getters
 
-  public int getId() { return id; }
+  public int getId() {
+    return id;
+  }
 
   public String getFirstname() {
     return firstname;
@@ -105,6 +114,11 @@ public class ContactData {
     return homePhone;
   }
 
+  public String getAllPhones() {
+    return allPhones;
+  }
+
+
   public String getMobilePhone() {
     return mobilePhone;
   }
@@ -112,7 +126,6 @@ public class ContactData {
   public String getWorkPhone() {
     return workPhone;
   }
-
 
 
   @Override
