@@ -131,10 +131,11 @@ public class ContactHelper extends HelperBase {
       String lastName = element.findElement(By.xpath(".//td[2]")).getText();
       String firstName = element.findElement(By.xpath(".//td[3]")).getText();
       String allPhones = element.findElement(By.xpath(".//td[6]")).getText();
+      String address = element.findElement(By.xpath(".//td[4]")).getText();
       String allMails = element.findElement(By.xpath(".//td[5]")).getText();
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       contactCache.add(new ContactData().withId(id).withFirstname(firstName).
-              withLastname(lastName).withAllPhones(allPhones).withAllMails(allMails));
+              withLastname(lastName).withAllPhones(allPhones).withAddress(address).withAllMails(allMails));
     }
     return new Contacts(contactCache);
   }
@@ -150,9 +151,11 @@ public class ContactHelper extends HelperBase {
     String firstMail = wd.findElement(By.name("email")).getAttribute("value");
     String secondMail = wd.findElement(By.name("email2")).getAttribute("value");
     String thirdMail = wd.findElement(By.name("email3")).getAttribute("value");
+    String address = wd.findElement(By.name("address")).getAttribute("value");
     wd.navigate().back();
     return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
             .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
+            .withAddress(address)
             .withFirstMail(firstMail).withSecondMail(secondMail).withThirdMail(thirdMail);
   }
 }

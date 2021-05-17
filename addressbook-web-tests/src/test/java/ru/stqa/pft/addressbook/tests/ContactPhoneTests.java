@@ -18,6 +18,7 @@ public class ContactPhoneTests extends TestBase{
       app.contact().create(new ContactData().withFirstname("Chugunova").withMiddlename("Andreevna").withLastname("Yuliya").
               withNickname("Loilek").withCompany("R-Tech").withAddress("Moscow").
               withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21")
+              .withAddress("Moscow\nOchakovskaya\n33-301")
               .withFirstMail("111@123.ru").withSecondMail("222@123.ru").withThirdMail("333@123.ru"));
     }
   }
@@ -28,6 +29,7 @@ public class ContactPhoneTests extends TestBase{
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
     assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
+    assertThat(contact.getAddress(), equalTo(contactInfoFromEditForm.getAddress()));
     assertThat(contact.getAllMails(), equalTo(mergeMails(contactInfoFromEditForm)));
   }
 
