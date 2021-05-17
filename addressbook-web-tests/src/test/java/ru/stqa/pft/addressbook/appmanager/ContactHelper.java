@@ -27,6 +27,11 @@ public class ContactHelper extends HelperBase {
     type(By.name("company"), contactData.getCompany());
     type(By.name("address"), contactData.getAddress());
     type(By.name("home"), contactData.getHomePhone());
+    type(By.name("mobile"), contactData.getMobilePhone());
+    type(By.name("work"), contactData.getWorkPhone());
+    type(By.name("email"), contactData.getFirstMail());
+    type(By.name("email2"), contactData.getSecondMail());
+    type(By.name("email3"), contactData.getThirdMail());
   }
 
   public void initContactCreation() {
@@ -122,7 +127,7 @@ public class ContactHelper extends HelperBase {
   private Contacts contactCache = null;
 
   public Contacts all() {
-    if (contactCache != null){
+    if (contactCache != null) {
       return new Contacts(contactCache);
     }
     contactCache = new Contacts();
@@ -139,7 +144,6 @@ public class ContactHelper extends HelperBase {
     }
     return new Contacts(contactCache);
   }
-
 
   public ContactData infoFromEditForm(ContactData contact) {
     initContactModificationById(contact.getId());
