@@ -16,9 +16,14 @@ public class ContactData {
   private String mobilePhone;
   private String workPhone;
   private String allPhones;
+  private String allMails;
+  private String firstMail;
+  private String secondMail;
+  private String thirdMail;
 
 
-//setters
+
+  //setters
 
   public ContactData withId(int id) {
     this.id = id;
@@ -75,6 +80,26 @@ public class ContactData {
     return this;
   }
 
+  public ContactData withAllMails(String allMails) {
+    this.allMails = allMails;
+    return this;
+  }
+
+  public ContactData withFirstMail(String firstMail) {
+    this.firstMail = firstMail;
+    return this;
+  }
+
+  public ContactData withSecondMail(String secondMail) {
+    this.secondMail = secondMail;
+    return this;
+  }
+
+  public ContactData withThirdMail(String thirdMail) {
+    this.thirdMail = thirdMail;
+    return this;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -114,17 +139,32 @@ public class ContactData {
     return homePhone;
   }
 
-  public String getAllPhones() {
-    return allPhones;
-  }
-
-
   public String getMobilePhone() {
     return mobilePhone;
   }
 
   public String getWorkPhone() {
     return workPhone;
+  }
+
+  public String getAllPhones() {
+    return allPhones;
+  }
+
+  public String getAllMails() {
+    return allMails;
+  }
+
+  public String getFirstMail() {
+    return firstMail;
+  }
+
+  public String getSecondMail() {
+    return secondMail;
+  }
+
+  public String getThirdMail() {
+    return thirdMail;
   }
 
 

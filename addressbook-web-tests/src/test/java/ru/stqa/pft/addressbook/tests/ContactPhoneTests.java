@@ -17,18 +17,28 @@ public class ContactPhoneTests extends TestBase{
     if (app.contact().list().size() == 0) {
       app.contact().create(new ContactData().withFirstname("Chugunova").withMiddlename("Andreevna").withLastname("Yuliya").
               withNickname("Loilek").withCompany("R-Tech").withAddress("Moscow").
-              withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21"));
+              withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21")
+              .withFirstMail("111@123.ru").withSecondMail("222@123.ru").withThirdMail("333@123.ru"));
     }
   }
-
 
   @Test
   public void TestContactPhones(){
     app.goTo().HomePage();
     ContactData contact = app.contact().all().iterator().next();
     ContactData contactInfoFromEditForm = app.contact().infoFromEditForm(contact);
-
     assertThat(contact.getAllPhones(), equalTo(mergePhones(contactInfoFromEditForm)));
+    assertThat(contact.getAllMails(), equalTo(mergeMails(contactInfoFromEditForm)));
+  }
+
+
+
+  private String mergeMails(ContactData contact) {
+    return Arrays.asList(contact.getFirstMail(), contact.getSecondMail(), contact.getThirdMail())
+            .stream().filter((s) -> !s.equals(""))
+            .map(ContactPhoneTests::cleaned)
+            .collect(Collectors.joining("\n"));
+
   }
 
   private String mergePhones(ContactData contact) {
@@ -38,7 +48,7 @@ public class ContactPhoneTests extends TestBase{
             .collect(Collectors.joining("\n"));
   }
 
-  public static String cleaned(String phone){
-    return phone.replaceAll("\\s","").replaceAll("[-()]", "");
+  public static String cleaned(String anyContactInfo){
+    return anyContactInfo.replaceAll("\\s","").replaceAll("[-()]", "");
   }
 }
