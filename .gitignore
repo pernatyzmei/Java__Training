@@ -16,3 +16,5 @@ gradle-app.setting
 .idea/misc.xml
 addressbook-web-tests/src/test/resources/contacts.csv
 addressbook-web-tests/src/test/resources/groups.csv
+addressbook-web-tests/src/test/resources/groups.xml
+addressbook-web-tests/src/test/resources/contacts.xml
