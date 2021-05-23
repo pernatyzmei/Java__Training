@@ -66,8 +66,8 @@ public class ContactDataGenerator {
               withNickname(String.format("Test Nickname %s", i)).withCompany(String.format("Test Company %s", i)).
               withAddress(String.format("Test Address %s", i)).withHomePhone(String.format("1-23-4%s", i)).
               withMobilePhone(String.format("8(911)110-67-5%s", i)).withWorkPhone(String.format("2 95 8%s", i)).
-              withFirstMail(String.format("TestFirst@Mail.ru %s", i)).withSecondMail(String.format("TestSecond@Mail.ru %s", i)).
-              withThirdMail(String.format("TestThird@Mail.ru %s", i)));
+              withFirstMail(String.format("TestFirst@Mail.ru%s", i)).withSecondMail(String.format("TestSecond@Mail.ru%s", i)).
+              withThirdMail(String.format("TestThird@Mail.ru%s", i)));
     }
     return contacts;
   }
