@@ -1,23 +1,47 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
 
-  @Test //(enabled = false)
-  public void testContactCreation() throws Exception {
+  @DataProvider
+  public Iterator<Object[]> validContacts() throws IOException {
+    List<Object[]> list = new ArrayList<Object[]>();
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.csv")));
+    String line = reader.readLine();
+    while (line !=null){
+      String[] split = line.split(";");
+      list.add(new Object[] {new ContactData().withFirstname(split[0]).
+              withMiddlename(split[1]).withLastname(split[2]).
+              withNickname(split[3]).withCompany(split[4]).
+              withAddress(split[5]).withHomePhone(split[6]).
+              withMobilePhone(split[7]).withWorkPhone(split[8]).
+              withFirstMail(split[9]).withSecondMail(split[10]).
+              withThirdMail(split[11])});
+      line = reader.readLine();
+    }
+    return list.iterator();
+
+  }
+
+    @Test(dataProvider = "validContacts") //(enabled = false)
+
+  public void testContactCreation(ContactData contact) throws Exception {
     Contacts before = app.contact().all();
-    ContactData contact =
-            new ContactData().withFirstname("Chugunova").withMiddlename("Andreevna").withLastname("Yuliya").
-                    withNickname("Loilek").withCompany("R-Tech").withAddress("Moscow").
-                    withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21")
-                    .withAddress("Moscow\nOchakovskaya\n33-301")
-                    .withFirstMail("111@123.ru").withSecondMail("222@123.ru").withThirdMail("333@123.ru");
     app.contact().create(contact);
     assertThat(app.contact().count(), equalTo(before.size()+1));
     Contacts after = app.contact().all();
