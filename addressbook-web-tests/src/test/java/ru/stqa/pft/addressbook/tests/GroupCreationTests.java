@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -20,10 +21,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GroupCreationTests extends TestBase {
 
+  private Properties properties;
+
+  public GroupCreationTests() throws IOException {
+    properties = new Properties();
+    String target = System.getProperty("target", "local");
+    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+  }
+
 
   @DataProvider
   public Iterator<Object[]> validGroupsFromJson() throws IOException {
-    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File(properties.getProperty("web.groupFileUrl"))))) {
       String json = "";
       String line = reader.readLine();
       while (line != null) {
@@ -48,11 +57,15 @@ public class GroupCreationTests extends TestBase {
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt(g -> g.getId()).max().getAsInt()))));
   }
 
-  @Test(enabled = false)
+  @Test //(enabled = false)
   public void testBadGroupCreation() throws Exception {
     app.goTo().GroupPage();
     Groups before = app.group().all();
-    GroupData group = new GroupData().withName("Group'1").withHeader("group_header_1").withFooter("group_footer_1");
+    GroupData group =
+            new GroupData().
+                    withName(properties.getProperty("prim.name") + "'").
+                    withHeader(properties.getProperty("prim.header")).
+                    withFooter(properties.getProperty("prim.footer"));
     app.group().create(group);
     assertThat(app.group().count(), equalTo(before.size()));
     Groups after = app.group().all();
