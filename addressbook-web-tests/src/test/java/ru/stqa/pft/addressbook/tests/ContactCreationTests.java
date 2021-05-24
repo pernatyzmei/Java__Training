@@ -7,22 +7,27 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
+  private Properties properties;
+
+  public ContactCreationTests() throws IOException {
+    properties = new Properties();
+    String target = System.getProperty("target", "local");
+    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+  }
 
   @DataProvider
   public Iterator<Object[]> validContactsFromJson() throws IOException {
-    try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))){
+    try(BufferedReader reader = new BufferedReader(new FileReader(new File(properties.getProperty("web.contactFileUrl"))))){
       String json = "";
       String line = reader.readLine();
       while (line != null) {
@@ -45,15 +50,22 @@ public class ContactCreationTests extends TestBase {
     assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
   }
 
-  @Test (enabled = false)
+  @Test// (enabled = false)
   public void testBadContactCreation() throws Exception {
     Contacts before = app.contact().all();
     ContactData contact =
-            new ContactData().withFirstname("Chugun'ova").withMiddlename("Andreevna").withLastname("Yuliya").
-                    withNickname("Loilek").withCompany("R-Tech").withAddress("Moscow").
-                    withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21")
-                    .withAddress("Moscow\nOchakovskaya\n33-301")
-                    .withFirstMail("111@123.ru").withSecondMail("222@123.ru").withThirdMail("333@123.ru");
+            new ContactData().withFirstname(properties.getProperty("prim.firstname") + "'").
+                    withMiddlename(properties.getProperty("prim.middlename")).
+                    withLastname(properties.getProperty("prim.lastname")).
+                    withNickname(properties.getProperty("prim.nickname")).
+                    withCompany(properties.getProperty("prim.company")).
+                    withAddress(properties.getProperty("prim.address")).
+                    withHomePhone(properties.getProperty("prim.homePhone")).
+                    withMobilePhone(properties.getProperty("prim.mobilePhone")).
+                    withWorkPhone(properties.getProperty("prim.workPhone")).
+                    withFirstMail(properties.getProperty("prim.firstMail")).
+                    withSecondMail(properties.getProperty("prim.secondMail")).
+                    withThirdMail(properties.getProperty("prim.thirdMail"));
     app.contact().create(contact);
     assertThat(app.contact().count(), equalTo(before.size()));
     Contacts after = app.contact().all();
@@ -62,4 +74,3 @@ public class ContactCreationTests extends TestBase {
 
 
 }
-

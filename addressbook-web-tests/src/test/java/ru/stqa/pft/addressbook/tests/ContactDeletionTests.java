@@ -5,20 +5,41 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class ContactDeletionTests extends TestBase {
 
+  private Properties properties;
+
+  public ContactDeletionTests() throws IOException {
+    properties = new Properties();
+    String target = System.getProperty("target", "local");
+    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+  }
+
+
   @BeforeMethod
   public void ensurePreconditions(){
     if (app.contact().list().size() == 0) {
-      app.contact().create(new ContactData().withFirstname("Chugunova").withMiddlename("Andreevna").withLastname("Yuliya").
-              withNickname("Loilek").withCompany("R-Tech").withAddress("Moscow").
-              withHomePhone("2-95-87").withMobilePhone("+7(903)110").withWorkPhone("3 64 21")
-              .withAddress("Moscow\nOchakovskaya\n33-301")
-              .withFirstMail("111@123.ru").withSecondMail("222@123.ru").withThirdMail("333@123.ru"));
+      app.contact().create(new ContactData().withFirstname(properties.getProperty("prim.firstname")).
+              withMiddlename(properties.getProperty("prim.middlename")).
+              withLastname(properties.getProperty("prim.lastname")).
+              withNickname(properties.getProperty("prim.nickname")).
+              withCompany(properties.getProperty("prim.company")).
+              withAddress(properties.getProperty("prim.address")).
+              withHomePhone(properties.getProperty("prim.homePhone")).
+              withMobilePhone(properties.getProperty("prim.mobilePhone")).
+              withWorkPhone(properties.getProperty("prim.workPhone")).
+              withFirstMail(properties.getProperty("prim.firstMail")).
+              withSecondMail(properties.getProperty("prim.secondMail")).
+              withThirdMail(properties.getProperty("prim.thirdMail")));
     }
   }
 
