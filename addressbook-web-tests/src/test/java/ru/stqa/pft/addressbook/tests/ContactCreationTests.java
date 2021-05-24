@@ -54,7 +54,7 @@ public class ContactCreationTests extends TestBase {
   public void testBadContactCreation() throws Exception {
     Contacts before = app.contact().all();
     ContactData contact =
-            new ContactData().withFirstname(properties.getProperty("prim.firstname") + "'").
+            new ContactData().withFirstname(properties.getProperty("prim.firstname")).
                     withMiddlename(properties.getProperty("prim.middlename")).
                     withLastname(properties.getProperty("prim.lastname")).
                     withNickname(properties.getProperty("prim.nickname")).
