@@ -1,42 +1,93 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.io.File;
 import java.util.Objects;
+
+@Entity
+@Table (name = "addressbook")
 
 public class ContactData {
 
+  @Id
+  @Column(name = "id")
   private int id = Integer.MAX_VALUE;
 
+  @Column(name = "firstname")
   @Expose
   private String firstname;
+
+  @Column(name = "middlename")
   @Expose
   private String middlename;
+
+  @Column(name = "lastname")
   @Expose
   private String lastname;
+
+  @Transient
+  private String group;
+
+  @Column(name = "nickname")
   @Expose
   private String nickname;
+
+  @Column(name = "company")
   @Expose
   private String company;
+
+  @Column(name = "address")
+  @Type(type = "text")
   @Expose
   private String address;
+
+  @Column(name = "home")
+  @Type(type = "text")
   @Expose
   private String homePhone;
+
+  @Column(name = "mobile")
+  @Type(type = "text")
   @Expose
   private String mobilePhone;
+
+  @Column(name = "work")
+  @Type(type = "text")
   @Expose
   private String workPhone;
+
+  @Column(name = "photo")
+  @Type(type = "text")
+  @Expose
+  private String photo;
+
+  @Transient
   private String allPhones;
+
+  @Transient
   private String allMails;
+
+  @Column(name = "email")
+  @Type(type = "text")
   @Expose
   private String firstMail;
+
+  @Column(name = "email2")
+  @Type(type = "text")
   @Expose
   private String secondMail;
+
+  @Column(name = "email3")
+  @Type(type = "text")
   @Expose
   private String thirdMail;
 
 
   //setters
+
 
   public ContactData withId(int id) {
     this.id = id;
@@ -113,6 +164,11 @@ public class ContactData {
     return this;
   }
 
+  public ContactData withPhoto(File photo) {
+    this.photo = photo.getPath();
+    return this;
+  }
+
   public void setId(int id) {
     this.id = id;
   }
@@ -180,6 +236,10 @@ public class ContactData {
     return thirdMail;
   }
 
+  public File getPhoto() {
+    return new File(photo);
+  }
+
 
   @Override
   public String toString() {
@@ -202,6 +262,7 @@ public class ContactData {
   public int hashCode() {
     return Objects.hash(id, firstname, lastname);
   }
+
 
 
 }
