@@ -5,7 +5,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table (name = "addressbook")
@@ -27,9 +29,6 @@ public class ContactData {
   @Column(name = "lastname")
   @Expose
   private String lastname;
-
-  @Transient
-  private String group;
 
   @Column(name = "nickname")
   @Expose
@@ -84,6 +83,11 @@ public class ContactData {
   @Type(type = "text")
   @Expose
   private String thirdMail;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "address_in_groups", joinColumns = @JoinColumn(name = "id"),
+          inverseJoinColumns = @JoinColumn(name = "group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
 
 
   //setters
@@ -240,6 +244,10 @@ public class ContactData {
     return new File(photo);
   }
 
+  public Groups getGroups() {
+    return new Groups(groups);
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -248,7 +256,6 @@ public class ContactData {
     return id == that.id && Objects.equals(firstname, that.firstname)
             && Objects.equals(middlename, that.middlename)
             && Objects.equals(lastname, that.lastname)
-            && Objects.equals(group, that.group)
             && Objects.equals(nickname, that.nickname)
             && Objects.equals(company, that.company)
              && Objects.equals(homePhone, that.homePhone)
@@ -263,7 +270,7 @@ public class ContactData {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id,  firstname, middlename, lastname, group, nickname, company,
+    return Objects.hash(id,  firstname, middlename, lastname, nickname, company,
           homePhone, mobilePhone, workPhone, allPhones, allMails, firstMail, secondMail, thirdMail );
   }
 
