@@ -45,8 +45,8 @@ public class ContactCreationTests extends TestBase {
   public void testContactCreation(ContactData contact) throws Exception {
     Contacts before = app.db().contacts();
     app.contact().create(contact);
-    Contacts after = app.db().contacts();
-    assertThat(after.size(), equalTo(before.size()+1));
+    assertThat(app.db().contacts().size(), equalTo(before.size()+1));
+      Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
   }
 
@@ -67,7 +67,7 @@ public class ContactCreationTests extends TestBase {
                     withSecondMail(properties.getProperty("prim.secondMail")).
                     withThirdMail(properties.getProperty("prim.thirdMail"));
     app.contact().create(contact);
-    assertThat(app.contact().count(), equalTo(before.size()));
+    assertThat(app.db().contacts().size(), equalTo(before.size()));
     Contacts after =app.db().contacts();
     assertThat(after, equalTo(before));
   }
