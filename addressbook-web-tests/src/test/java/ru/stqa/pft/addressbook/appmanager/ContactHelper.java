@@ -163,9 +163,6 @@ public class ContactHelper extends HelperBase {
   }
 
   //for Contact-Group connection manipulation
-  public void groupSelectField(){
-    wd.findElement(By.name("to_group")).click();
-  }
 
   public void selectGroupToAdd(int id){
     wd.findElement(By.xpath(".//div[4]/select/option[@value='" + id + "']")).click();
@@ -177,10 +174,30 @@ public class ContactHelper extends HelperBase {
 
   public void addToGroup(ContactData contact, GroupData group){
     selectContactById(contact.getId());
-    groupSelectField();
     selectGroupToAdd(group.getId());
     submitContactAddition();
     returnToHomePage();
   }
+
+  public void removeFromGroup(){
+    wd.findElement(By.name("remove")).click();
+  }
+
+  public void selectGroupToOpen(int id){
+    wd.findElement(By.xpath(".//select/option[@value='" + id + "']")).click();
+  }
+
+  public void viewAllContacts(){
+    wd.findElement(By.xpath(".//select/option[@value='All']")).click();
+  }
+
+  public void removeContact(ContactData contact, GroupData group){
+    selectGroupToOpen(group.getId());
+    selectContactById(contact.getId());
+    removeFromGroup();
+    returnToHomePage();
+    viewAllContacts();
+  }
+
 }
 
