@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,6 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("home"));
   }
 
-
   public void create(ContactData data) {
     initContactCreation();
     fillContactForm(data);
@@ -102,7 +102,6 @@ public class ContactHelper extends HelperBase {
     contactCache = null;
     returnToHomePage();
   }
-
 
   public boolean isThereAContact() {
     return isElementPresent(By.name("selected[]"));
@@ -162,4 +161,26 @@ public class ContactHelper extends HelperBase {
             .withAddress(address)
             .withFirstMail(firstMail).withSecondMail(secondMail).withThirdMail(thirdMail);
   }
+
+  //for Contact-Group connection manipulation
+  public void groupSelectField(){
+    wd.findElement(By.name("to_group")).click();
+  }
+
+  public void selectGroupToAdd(int id){
+    wd.findElement(By.xpath(".//div[4]/select/option[@value='" + id + "']")).click();
+  }
+
+  public void submitContactAddition(){
+    wd.findElement(By.name("add")).click();
+  }
+
+  public void addToGroup(ContactData contact, GroupData group){
+    selectContactById(contact.getId());
+    groupSelectField();
+    selectGroupToAdd(group.getId());
+    submitContactAddition();
+    returnToHomePage();
+  }
 }
+

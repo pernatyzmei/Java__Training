@@ -15,8 +15,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class ContactModificationTests extends TestBase {
-
-
   private Properties properties;
 
   public ContactModificationTests() throws IOException {
