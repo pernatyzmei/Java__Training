@@ -2,7 +2,7 @@
 
 <suite name="Suite1" verbose="1" >
 
-    <test name="Groups" >
+    <test name="contactsToGroups" >
         <classes>
             <class name="ru.stqa.pft.addressbook.tests.ContactToGroupAdditionTests" />
             <class name="ru.stqa.pft.addressbook.tests.ContactToGroupRemovalTests" />
