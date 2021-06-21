@@ -51,15 +51,38 @@ public class ContactToGroupRemovalTests extends TestBase {
     Contacts contactList = app.db().contacts();
     Groups groupList = app.db().groups();
     app.contact().addToGroup(contactList.iterator().next(), groupList.iterator().next());
+    System.out.println("1");
 
   }
 
-  @Test (enabled = false)
+  @Test // (enabled = false)
   public void TestContactToGroupRemoval() {
+
+    Groups beforeGroupList = app.db().groups();
+
+    //получение списка групп, содержащих контакты
+    Groups groupsHaveContacts = new Groups();
+    for (GroupData group : beforeGroupList) {
+     if (group.getContacts().size() != 0) {
+       groupsHaveContacts.add(group);
+      }
+    }
+
+    //выбор группы и контакта для удаления из списка контактов в этой группе
+    GroupData groupRemoveContact = groupsHaveContacts.iterator().next();
+    ContactData removedContact = groupRemoveContact.getContacts().iterator().next();
+
+    // удаление контакта из группы с помощью GUI
     app.goTo().HomePage();
+    app.contact().selectGroupToOpen(groupRemoveContact.getId());
+    app.contact().removeContact(removedContact, groupRemoveContact);
+    app.contact().returnToHomePage();
+
 
 
     //проверки на то, что в связующей таблице отсутствует строка со связью контакт-группа
 
   }
+
+
 }

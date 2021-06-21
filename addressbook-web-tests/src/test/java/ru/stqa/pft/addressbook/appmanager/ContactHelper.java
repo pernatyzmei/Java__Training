@@ -196,7 +196,6 @@ public class ContactHelper extends HelperBase {
     selectContactById(contact.getId());
     removeFromGroup();
     returnToHomePage();
-    viewAllContacts();
   }
 
 }

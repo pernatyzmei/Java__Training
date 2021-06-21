@@ -43,9 +43,9 @@ task testContacts(type: Test) {
         systemProperty 'verifyUi', "${verifyUi}"
     }
 
-    task testOther(type: Test) {
+    task contactsToGroups(type: Test) {
         useTestNG {
-            suites 'src/test/resources/testng-other.xml'
+            suites 'src/test/resources/testng-contactsToGroups.xml'
         }
 
         if (project.hasProperty('browser')) {

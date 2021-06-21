@@ -76,12 +76,15 @@ public class ContactToGroupAdditionTests extends TestBase {
     int contactBefore = addingContact.getGroups().size();
     System.out.println("contactBefore " + contactBefore);
     app.contact().addToGroup(addingContact, group);
-    //ContactData contactAfter =contactsWithoutGroups.;  //addingContact.getGroups().size();
-    //System.out.println("contactAfter " + contactAfter);
-    //assertThat(contactAfter, equalTo(contactBefore+1));
-
 
     //проверки на то, что в связующей таблице появилась строка со связью контакт-группа
+    /*
+    ContactData contactAfter =contactsWithoutGroups.;  //addingContact.getGroups().size();
+    System.out.println("contactAfter " + contactAfter);
+    assertThat(contactAfter, equalTo(contactBefore+1));
+     */
+
+
   }
 
 }
