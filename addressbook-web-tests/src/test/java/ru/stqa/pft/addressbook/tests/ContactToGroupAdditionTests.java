@@ -30,12 +30,13 @@ public class ContactToGroupAdditionTests extends TestBase {
   public void ensurePreconditions() {
 
     Contacts beforeContactList = app.db().contacts();
-    // получение списка контактов без группы
+    // получение списка свободных контактов
     for (ContactData contact : beforeContactList) {
       if (contact.getGroups().size() == 0) {
         contactsWithoutGroups.add(contact);
       }
     }
+//если нет контактов, свободных от группы - создать контакт
     if (contactsWithoutGroups.size() == 0) {
       ContactData newContact = new ContactData().withFirstname(properties.getProperty("prim.firstname")).
               withMiddlename(properties.getProperty("prim.middlename")).
@@ -51,13 +52,13 @@ public class ContactToGroupAdditionTests extends TestBase {
               withThirdMail(properties.getProperty("prim.thirdMail"));
       app.contact().create(newContact);
       Contacts afterContactList = app.db().contacts();
-      // получение списка контактов, не включенных в группы
+      // получение списка свободных контактов, после добавления нового контакта
       for (ContactData contact : afterContactList) {
         if (contact.getGroups().size() == 0) {
           contactsWithoutGroups.add(contact);
         }
       }
-
+//проверка, что существует хотя бы одна группа
       if (app.db().groups().size() == 0) {
         app.goTo().GroupPage();
         app.group().create(new GroupData().
@@ -73,12 +74,12 @@ public class ContactToGroupAdditionTests extends TestBase {
   @Test
   public void TestContactToGroupAddition() {
     app.goTo().HomePage();
-    ContactData before = contactsWithoutGroups.iterator().next();
+    ContactData before = contactsWithoutGroups.iterator().next(); //выбор контакта для связки с группой из списка свободных контактов
     Groups groupList = app.db().groups();
     GroupData group = groupList.iterator().next();
     app.contact().addToGroup(before, group);
 
-    //проверка на то, что это контакт связан с конкретной группой
+    //проверка на то, что связка контакта с группой установлена: сравнение списка контактов на группе до и после связки
     Contacts contactList = app.db().contacts();
     ContactData after = app.contact().refresh(before, contactList);
     assertThat(after.getGroups(), equalTo(before.getGroups().withAdded(group)));

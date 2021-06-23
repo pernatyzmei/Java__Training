@@ -17,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactToGroupRemovalTests extends TestBase {
   private Properties properties;
+  Groups groupsHaveContacts = new Groups();
 
   public ContactToGroupRemovalTests() throws IOException {
     properties = new Properties();
@@ -26,7 +27,7 @@ public class ContactToGroupRemovalTests extends TestBase {
 
   @BeforeMethod
   public void ensurePreconditions() {
-
+//проверка, что существуют какие-либо контакты
     if (app.db().contacts().size() == 0) {
       app.contact().create(new ContactData().withFirstname(properties.getProperty("prim.firstname")).
               withMiddlename(properties.getProperty("prim.middlename")).
@@ -41,6 +42,7 @@ public class ContactToGroupRemovalTests extends TestBase {
               withSecondMail(properties.getProperty("prim.secondMail")).
               withThirdMail(properties.getProperty("prim.thirdMail")));
     }
+    //проверка, что существуют какие-либо группы
     if (app.db().groups().size() == 0) {
       app.goTo().GroupPage();
       app.group().create(new GroupData().
@@ -49,27 +51,28 @@ public class ContactToGroupRemovalTests extends TestBase {
               withFooter(properties.getProperty("prim.footer")));
     }
 
-    // гарантирует, что есть хотя бы одна связь контакта с группой
-    app.goTo().HomePage();
-    Contacts contactList = app.db().contacts();
-    Groups groupList = app.db().groups();
-    app.contact().addToGroup(contactList.iterator().next(), groupList.iterator().next());
-  }
-
-  @Test // (enabled = false)
-  public void TestContactToGroupRemoval() {
-
     Groups beforeGroupList = app.db().groups();
-
-    //получение списка групп, содержащих контакты
+    //получение списка групп, связанных с контактами
     Groups groupsHaveContacts = new Groups();
     for (GroupData group : beforeGroupList) {
       if (group.getContacts().size() != 0) {
         groupsHaveContacts.add(group);
       }
     }
+    // если нет групп, связанных с контактами, то создается связка группы с контактом
+    if (groupsHaveContacts.size() ==0){
+      app.goTo().HomePage();
+      Contacts contactList = app.db().contacts();
+      Groups groupList = app.db().groups();
+      app.contact().addToGroup(contactList.iterator().next(), groupList.iterator().next());
+    }
 
-    //выбор группы и контакта для удаления из списка контактов в этой группе
+  }
+
+  @Test // (enabled = false)
+  public void TestContactToGroupRemoval() {
+
+    //выбор группы с контактом внутри и контакта для удаления из списка контактов в этой группе
     GroupData groupWithContact = groupsHaveContacts.iterator().next();
     ContactData contactWithGroup = groupWithContact.getContacts().iterator().next();
 
@@ -79,8 +82,7 @@ public class ContactToGroupRemovalTests extends TestBase {
     app.contact().removeContact(contactWithGroup, groupWithContact);
     app.contact().returnToHomePage();
 
-
-    //проверки на то, что в связующей таблице отсутствует строка со связью контакт-группа
+    //проверки на то, что в связующей таблице отсутствует строка со связью контакт-группа: по содержимому списков групп
 
     Contacts contactList = app.db().contacts();
     ContactData contactWithoutGroup = app.contact().refresh(contactWithGroup, contactList);
