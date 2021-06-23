@@ -53,7 +53,6 @@ public class ContactToGroupRemovalTests extends TestBase {
 
     Groups beforeGroupList = app.db().groups();
     //получение списка групп, связанных с контактами
-    Groups groupsHaveContacts = new Groups();
     for (GroupData group : beforeGroupList) {
       if (group.getContacts().size() != 0) {
         groupsHaveContacts.add(group);
