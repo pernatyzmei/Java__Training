@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class ContactToGroupRemovalTests extends TestBase {
   private Properties properties;
 
@@ -24,7 +27,7 @@ public class ContactToGroupRemovalTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions() {
 
-    if (app.db().contacts().size() ==0) {
+    if (app.db().contacts().size() == 0) {
       app.contact().create(new ContactData().withFirstname(properties.getProperty("prim.firstname")).
               withMiddlename(properties.getProperty("prim.middlename")).
               withLastname(properties.getProperty("prim.lastname")).
@@ -38,7 +41,7 @@ public class ContactToGroupRemovalTests extends TestBase {
               withSecondMail(properties.getProperty("prim.secondMail")).
               withThirdMail(properties.getProperty("prim.thirdMail")));
     }
-    if (app.db().groups().size() ==0){
+    if (app.db().groups().size() == 0) {
       app.goTo().GroupPage();
       app.group().create(new GroupData().
               withName(properties.getProperty("prim.name")).
@@ -51,8 +54,6 @@ public class ContactToGroupRemovalTests extends TestBase {
     Contacts contactList = app.db().contacts();
     Groups groupList = app.db().groups();
     app.contact().addToGroup(contactList.iterator().next(), groupList.iterator().next());
-    System.out.println("1");
-
   }
 
   @Test // (enabled = false)
@@ -63,26 +64,26 @@ public class ContactToGroupRemovalTests extends TestBase {
     //получение списка групп, содержащих контакты
     Groups groupsHaveContacts = new Groups();
     for (GroupData group : beforeGroupList) {
-     if (group.getContacts().size() != 0) {
-       groupsHaveContacts.add(group);
+      if (group.getContacts().size() != 0) {
+        groupsHaveContacts.add(group);
       }
     }
 
     //выбор группы и контакта для удаления из списка контактов в этой группе
-    GroupData groupRemoveContact = groupsHaveContacts.iterator().next();
-    ContactData removedContact = groupRemoveContact.getContacts().iterator().next();
+    GroupData groupWithContact = groupsHaveContacts.iterator().next();
+    ContactData contactWithGroup = groupWithContact.getContacts().iterator().next();
 
-    // удаление контакта из группы с помощью GUI
+    // удаление контакта из группы
     app.goTo().HomePage();
-    app.contact().selectGroupToOpen(groupRemoveContact.getId());
-    app.contact().removeContact(removedContact, groupRemoveContact);
+    app.contact().selectGroupToOpen(groupWithContact.getId());
+    app.contact().removeContact(contactWithGroup, groupWithContact);
     app.contact().returnToHomePage();
-
 
 
     //проверки на то, что в связующей таблице отсутствует строка со связью контакт-группа
 
+    Contacts contactList = app.db().contacts();
+    ContactData contactWithoutGroup = app.contact().refresh(contactWithGroup, contactList);
+    assertThat(contactWithoutGroup.getGroups(), equalTo(contactWithGroup.getGroups().without(groupWithContact)));
   }
-
-
 }

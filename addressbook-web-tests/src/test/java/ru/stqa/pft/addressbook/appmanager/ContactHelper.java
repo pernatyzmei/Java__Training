@@ -164,39 +164,49 @@ public class ContactHelper extends HelperBase {
 
   //for Contact-Group connection manipulation
 
-  public void selectGroupToAdd(int id){
+  public void selectGroupToAdd(int id) {
     wd.findElement(By.xpath(".//div[4]/select/option[@value='" + id + "']")).click();
   }
 
-  public void submitContactAddition(){
+  public void submitContactAddition() {
     wd.findElement(By.name("add")).click();
   }
 
-  public void addToGroup(ContactData contact, GroupData group){
+  public void addToGroup(ContactData contact, GroupData group) {
     selectContactById(contact.getId());
     selectGroupToAdd(group.getId());
     submitContactAddition();
     returnToHomePage();
   }
 
-  public void removeFromGroup(){
+
+  public void removeFromGroup() {
     wd.findElement(By.name("remove")).click();
   }
 
-  public void selectGroupToOpen(int id){
+  public void selectGroupToOpen(int id) {
     wd.findElement(By.xpath(".//select/option[@value='" + id + "']")).click();
   }
 
-  public void viewAllContacts(){
+  public void viewAllContacts() {
     wd.findElement(By.xpath(".//select/option[@value='All']")).click();
   }
 
-  public void removeContact(ContactData contact, GroupData group){
+  public void removeContact(ContactData contact, GroupData group) {
     selectGroupToOpen(group.getId());
     selectContactById(contact.getId());
     removeFromGroup();
     returnToHomePage();
   }
 
+  public ContactData refresh(ContactData addingContact, Contacts contactList) {
+    ContactData contactAfter = new ContactData();
+    for (ContactData findContact : contactList) {
+      if (findContact.getId() == addingContact.getId()) {
+        contactAfter = findContact;
+      }
+    }
+    return contactAfter;
+  }
 }
 
