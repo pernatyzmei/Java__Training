@@ -14,9 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
   private final Properties properties;
-  private WebDriver wd;
+  public WebDriver wd;
   private String browser;
   private MailHelper mailHelper;
+  private RegistrationHelper registrationHelper;
+
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -65,5 +67,12 @@ public class ApplicationManager {
     }
     return mailHelper;
   }
+
+  public RegistrationHelper registration() {
+    if(registrationHelper == null){
+      registrationHelper = new RegistrationHelper(this);
+    }
+    return registrationHelper;
+    }
 
 }

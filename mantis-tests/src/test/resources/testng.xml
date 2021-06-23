@@ -5,6 +5,7 @@
     <test name="Contacts">
         <classes>
             <class name="ru.stqa.pft.mantis.tests.loginTests" />
+            <class name="ru.stqa.pft.mantis.tests.RegistrationTests" />
 
         </classes>
     </test>
