@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.ContactData;
-import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +33,7 @@ public class ContactHelper extends HelperBase {
     click(By.linkText("add new"));
   }
 
-  public void selectContact(int index ) {
-    wd.findElements(By.name("selected[]")).get(index).click();
-  }
 
-  public void initContactModification() {
-    click(By.xpath("//img[@alt='Edit']"));
-  }
 
   public void submitContactModification() {
     click(By.xpath("//input[22]"));
@@ -77,12 +70,25 @@ public class ContactHelper extends HelperBase {
     List<ContactData> contacts = new ArrayList<ContactData>();
     List<WebElement> elements = wd.findElements(By.name("entry"));
     for (WebElement element : elements) {
-      String lastName = element.findElement(By.xpath("//td[2]")).getText();
-      String firstName =  element.findElement(By.xpath("//td[3]")).getText();
+      String lastName = element.findElement(By.xpath(".//td[2]")).getText();
+      String firstName =  element.findElement(By.xpath(".//td[3]")).getText();
       int id  = Integer.parseInt( element.findElement(By.tagName("input")).getAttribute("value"));
       ContactData contact  = new ContactData(id, firstName, null, lastName, null, null, null, null);
       contacts.add(contact);
     }
     return  contacts;
+  }
+
+  public void initContactModification(int id) {
+    List<WebElement> elements = wd.findElements(By.name("entry"));
+    for (WebElement element : elements) {
+      if (Integer.parseInt( element.findElement(By.tagName("input")).getAttribute("value")) ==id){
+        element.findElement(By.xpath(".//td[8]")).click();
+      }
+    }
+  }
+
+  public void selectContact(int index ) {
+    wd.findElements(By.name("selected[]")).get(index).click();
   }
 }
