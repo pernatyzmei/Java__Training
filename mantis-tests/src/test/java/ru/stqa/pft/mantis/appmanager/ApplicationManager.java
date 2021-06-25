@@ -18,6 +18,7 @@ public class ApplicationManager {
   private String browser;
   private MailHelper mailHelper;
   private RegistrationHelper registrationHelper;
+  private SoapHelper soapHelper;
 
 
   public ApplicationManager(String browser) {
@@ -73,6 +74,13 @@ public class ApplicationManager {
       registrationHelper = new RegistrationHelper(this);
     }
     return registrationHelper;
+    }
+
+    public SoapHelper soap() {
+      if(soapHelper == null){
+        soapHelper = new SoapHelper(this);
+      }
+      return soapHelper;
     }
 
 }
